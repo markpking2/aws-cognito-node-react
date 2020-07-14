@@ -80,7 +80,7 @@ async function verify(pems, auth) {
 exports.getVerifyMiddleware = () => (req, res, next) => {
     (async () => {
         try {
-            const { token_use, scope, email } = await verify(
+            const { token_use, scope, email, db_user_id } = await verify(
                 await getPems(),
                 req.get("Authorization")
             );
@@ -89,6 +89,7 @@ exports.getVerifyMiddleware = () => (req, res, next) => {
                 req.user.scope = scope.split(" ");
             } else if (token_use === "id") {
                 req.user.email = email;
+                req.user.id = db_user_id;
             }
             next();
         } catch (err) {
