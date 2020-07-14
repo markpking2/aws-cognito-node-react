@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getIdToken } from "./amplifyAuth";
+import { getIdToken } from "./cognitoAuth";
 
 export async function axiosWithAuth(method, path) {
     try {

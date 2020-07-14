@@ -14,6 +14,8 @@ import {
     VerifyForgotPassword,
 } from "./auth";
 
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+
 export default function AuthHub() {
     const [currentUser, setCurrentUser] = useState(null);
 
@@ -65,6 +67,19 @@ export default function AuthHub() {
                 <>
                     <h2>Hello {currentUser["email"]}</h2>
                     <SignOut />
+                    <button
+                        onClick={() => {
+                            axiosWithAuth("get", "/")
+                                .then((res) => {
+                                    console.log(res);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        }}
+                    >
+                        Test backend
+                    </button>
                 </>
             )}
 
