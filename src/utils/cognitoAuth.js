@@ -63,9 +63,23 @@ async function changePassword(oldPassword, newPassword) {
     try {
         const user = await Auth.currentAuthenticatedUser();
         await Auth.changePassword(user, oldPassword, newPassword);
+        return "Password was changed successfully.";
     } catch (err) {
         throw err;
     }
+}
+
+function getIdToken() {
+    return new Promise((resolve, reject) => {
+        Auth.currentSession()
+            .then((data) => {
+                const idToken = data.getIdToken();
+                resolve(idToken.jwtToken);
+            })
+            .catch(() => {
+                reject(Error("Not signed in."));
+            });
+    });
 }
 
 function getCurrentUser() {
@@ -91,6 +105,7 @@ export {
     federatedSignIn,
     forgotPassword,
     forgotPasswordSubmit,
+    getIdToken,
     changePassword,
     getCurrentUser,
 };
