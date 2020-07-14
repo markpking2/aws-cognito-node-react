@@ -8,7 +8,7 @@ Amplify.configure({
         userPoolWebClientId: cognitoConfig.clientId,
         region: cognitoConfig.region,
         oauth: {
-            domain: cognitoConfig.userPoolBaseUri,
+            domain: cognitoConfig.userPoolUri,
             scope: cognitoConfig.tokenScopes,
             redirectSignIn: cognitoConfig.callbackUri,
             redirectSignOut: cognitoConfig.signoutUri,

@@ -1,8 +1,13 @@
 import React from "react";
-import Auth from "./components/authHub";
+import AuthHub from "./components/authHub";
+import "./App.css";
 
 function App() {
-    return <Auth />;
+    return (
+        <div className="App">
+            <AuthHub />
+        </div>
+    );
 }
 
 export default App;

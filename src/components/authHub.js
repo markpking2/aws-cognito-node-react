@@ -14,7 +14,7 @@ import {
     VerifyForgotPassword,
 } from "./auth";
 
-export default function Auth() {
+export default function AuthHub() {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
