@@ -1,12 +1,12 @@
-import ChangePassword from "./ChangePassword";
-import ForgotPassword from "./ForgotPassword";
-import GoogleSignIn from "./GoogleSignIn";
-import LogIn from "./LogIn";
-import Register from "./Register";
-import ResendVerificationCode from "./ResendVerificationCode";
-import SignOut from "./SignOut";
-import VerifyEmailWithCode from "./VerifyEmailWithCode";
-import VerifyForgotPassword from "./VerifyForgotPassword";
+import ChangePassword from "./changePassword";
+import ForgotPassword from "./forgotPassword";
+import GoogleSignIn from "./googleSignIn";
+import LogIn from "./login";
+import Register from "./register";
+import ResendVerificationCode from "./resendVerificationCode";
+import SignOut from "./signOut";
+import VerifyEmailWithCode from "./verifyEmailWithCode";
+import VerifyForgotPassword from "./verifyForgotPassword";
 
 export {
     ChangePassword,
