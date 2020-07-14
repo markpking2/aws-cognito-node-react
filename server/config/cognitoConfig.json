@@ -1,0 +1,13 @@
+{
+    "clientId": "71cs1vs1bkc1b6ai9q0olocjas",
+    "userPool": "us-east-1_M3Gx3MjTH",
+    "region": "us-east-1",
+    "callbackUri": "http://localhost:3000",
+    "signoutUri": "http://localhost:3000",
+    "tokenScopes": [
+        "openid",
+        "email",
+        "profile",
+        "aws.cognito.signin.user.admin"
+    ]
+}
