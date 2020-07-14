@@ -77,7 +77,7 @@ async function verify(pems, auth) {
     );
 }
 
-exports.getVerifyMiddleware = () => (req, res, next) => {
+exports.cognitoMiddleware = () => (req, res, next) => {
     (async () => {
         try {
             const { token_use, scope, email, db_user_id } = await verify(
