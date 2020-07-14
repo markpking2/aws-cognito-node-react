@@ -49,10 +49,6 @@ export default function Auth() {
             .catch((err) => console.log(err));
     }, []);
 
-    useEffect(() => {
-        console.log(currentUser);
-    }, [currentUser]);
-
     return (
         <div>
             {!currentUser && (
