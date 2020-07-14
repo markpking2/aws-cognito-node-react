@@ -6,7 +6,8 @@ export async function axiosWithAuth(method, path) {
         const idToken = await getIdToken();
         return await axios
             .create({
-                baseURL: "http://localhost:5000",
+                baseURL:
+                    "http://cognitonodeserver-env.eba-zg9ahd2m.us-east-1.elasticbeanstalk.com",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${idToken}`,
