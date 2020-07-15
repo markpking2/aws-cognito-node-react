@@ -38,7 +38,7 @@ Enter a name for your app client. Since we are using React for the frontend, unc
 
 Next, click **Review** and then **Create pool**.
 
-After the pool is created, on the left under **App integration**, select **Domain name**. For this guide we'll use a Amazon Cognito domain. Choose a domain name, check if it's available, then click **save changes**. Make note of the domain you just created.  If you click **Go to summary** and you can easily copy it. We'll need this in the next step for configuring Google OAuth.
+After the pool is created, on the left under **App integration**, select **Domain name**. For this guide we'll use a Amazon Cognito domain. Choose a domain name, check if it's available, then click **save changes**. Make note of the domain you just created.  If you click **Go to summary** you can easily copy it. We'll need this in the next step for configuring Google OAuth.
 
 We still have some more configuration to do, but before we do that lets hop over to Google's developer console and create an OAuth application to use for our user pool.
 
@@ -830,9 +830,9 @@ export default function AuthHub() {
 
 Our **Hub** listener will emit an **event** each time an authentication action is performed. It uses a switch statement to perform certain actions depending on the event that is emitted.
 
-When our user sign's in, it will store the user object in state.
+When our user signs in, it will store the user object in state.
 
-Finally, well lay out our components so we can test them out.  We'll use conditional rendering to hide or show components based on the state of our authenticated user.
+Finally, we'll lay out our components so we can test them out.  We'll use conditional rendering to hide or show components based on the state of our authenticated user.
 
 ###### src/components/authHub.js
 
@@ -1436,7 +1436,7 @@ It's working!
 
 Now the last thing we have to do is add a custom **Lambda** trigger to our Cognito user pool so our Cognito users will be synced to our **RDS** database. This function will also add the user's database id into the payload of issued identity tokens.
 
-Our Node.js **Lambda** function will make use of an NPM package called [pg](https://www.npmjs.com/package/pg) to connect to our database. Because of this, we'll have create a deployment package and upload it to **Lambda** in a **.zip** file. Let's do that now!
+Our Node.js **Lambda** function will make use of an NPM package called [pg](https://www.npmjs.com/package/pg) to connect to our database. Because of this, we'll have to create a deployment package and upload it to **Lambda** in a **.zip** file. Let's do that now!
 
 Create an empty directory for our deployment package. Open up a terminal inside the directory and enter `npm init -y`.
 
@@ -1542,7 +1542,7 @@ Once your function is created, open it up and in the **Function code** section, 
 
 Upload the **function.zip** file you created earlier then click **Save.**
 
-We'll need load add the environment variables for our **RDS** database.  An easy way to get the values we need is to **SSH** back into our **Elastic Beanstalk**  instance. Once you're in, type `cd ../../../opt/elasticbeanstalk/deployment/`.
+We'll need to add the environment variables for our **RDS** database.  An easy way to get the values we need is to **SSH** back into our **Elastic Beanstalk**  instance. Once you're in, type `cd ../../../opt/elasticbeanstalk/deployment/`.
 
 Then enter `cat env` to list the env variables that are loaded into our server. Make note of these then head back over to our **Lambda** function.
 
