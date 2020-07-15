@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
         host: process.env.RDS_HOSTNAME,
         database: process.env.RDS_DB_NAME,
         password: process.env.RDS_PASSWORD,
-        port: process.env.RDS_DB_PORT,
+        port: process.env.RDS_PORT,
     });
     return new Promise((resolve, reject) => {
         const email =
@@ -17,12 +17,12 @@ exports.handler = async (event, context) => {
         async () => {};
         if (email) {
             pool.query(`SELECT email, id from USERS WHERE email='${email}'`)
-                .then((query) => {
-                    if (query.rows.length) {
+                .then((result) => {
+                    if (result.rows.length) {
                         event.response = {
                             claimsOverrideDetails: {
                                 claimsToAddOrOverride: {
-                                    db_user_id: query.rows[0].id,
+                                    db_user_id: result.rows[0].id,
                                 },
                             },
                         };
@@ -33,13 +33,13 @@ exports.handler = async (event, context) => {
                         return;
                     } else {
                         pool.query(
-                            `INSERT INTO users (email) VALUES ('${email}')`
+                            `INSERT INTO users (email) VALUES ('${email}') RETURNING id`
                         )
-                            .then((id) => {
+                            .then((result) => {
                                 event.response = {
                                     claimsOverrideDetails: {
                                         claimsToAddOrOverride: {
-                                            db_user_id: id,
+                                            db_user_id: result.rows[0].id,
                                         },
                                     },
                                 };
