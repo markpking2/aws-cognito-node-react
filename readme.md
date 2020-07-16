@@ -1,14 +1,18 @@
 # AWS Cognito Authentication with React and a custom Node.js Express API
 
-In this guide I am going to show you how to use Cognito for authentication with React and a Node.js Express API.  By the time we are done, our app will be able to login/register on AWS with email and Google OAuth. Users will also be able to receive a confirmation email, reset their password, and change their password.
+In this guide I am going to show you how to use Cognito for authentication with React and a Node.js Express API.  By the time we are done, our app will be able to login/register on AWS with email and Google OAuth. Users will also be able to receive a confirmation email, and reset/change their password.
+
+### Table of Contents:
+
+[TOC]
+
+This guide's main focus is authenticating with Cognito but If you want more in-depth guide on how to deploy the server on **Elastic Beanstalk**, I wrote one [here](https://github.com/markpkng/node-express-rds). 
 
 Our app will be deployed on Elastic Beanstalk using RDS (Amazon's Relational Database Service).  It will use a custom serverless Lambda trigger function to make sure our Cognito users are synced with our server's database.  In this function we will also add the user's primary database key into the identity token so our API can easily find the user's data without having to query by email.
 
 When a user authenticates through Cognito, AWS will issue the client a JWT (JSON Web Token).  Our client app will send the token to our server, which will verify the token through AWS. Let's get started!
 
-
-
-## Step One: Configuring Cognito in the AWS Console and Google OAuth
+## Step One: Configuring Cognito in the AWS Console and Google OAuth 
 
 First, let's create a new user pool in Cognito. Open the AWS console. In the top right, make sure you are in the correct region you want to use for your application.  Navigate to **Services**  > **Cognito ** > **Manage User Pools** > **Create a user pool**.
 
@@ -1146,8 +1150,6 @@ Next, we'll check compare the token's **aud** or **client_id** value to our Cogn
 
 ## Step Four: Configuring the rest of our server, deploying it to Elastic Beanstalk, and connecting an RDS instance
 
-This guide's main focus is authenticating with Cognito but If you want more in-depth guide on how to deploy the server on **Elastic Beanstalk**, I wrote one [here](https://github.com/markpkng/node-express-rds).  The deployment and RDS configuration with Knex is very similar.
-
 In the root of our server project, create a **Procfile** file with the following:
 
 ```
@@ -1385,8 +1387,6 @@ Authorization: 'Bearer this_should_not_work',
 Great! Our server responded with a **401 Unauthorized error** when we sent an invalid token. Change the **axiosWithAuth** back to what it was earlier. Now it's time to deploy our server onto **Elastic Beanstalk** and add an **RDS** instance.  After that we will create a custom **Lambda** trigger function that will run whenever Cognito generates a token.  The first time a user logs in, it will add the user to the server's RDS database and insert the user's database id to the identity token's payload.
 
 ## Step Five: Deploying our server to Elastic Beanstalk with an RDS instance
-
-Remember: If you aren't familiar with deploying a Node.js server to **Elastic Beanstalk**, I wrote a more detailed guide [here](https://github.com/markpkng/node-express-rds).
 
 Navigate to the **AWS console** and go to **Services** > **Elastic Beanstalk**. Enter a name for your server, select **Node.js** for the platform, **version 12** for the platform branch, and use the recommended platform version. For **Application code** select **Sample application**, then **Create application**.
 
