@@ -2,15 +2,31 @@
 
 In this guide I am going to show you how to use Cognito for authentication with React and a Node.js Express API.  By the time we are done, our app will be able to login/register on AWS with email and Google OAuth. Users will also be able to receive a confirmation email, and reset/change their password.
 
-### Table of Contents:
-
-[TOC]
-
 This guide's main focus is authenticating with Cognito but If you want more in-depth guide on how to deploy the server on **Elastic Beanstalk**, I wrote one [here](https://github.com/markpkng/node-express-rds). 
 
 Our app will be deployed on Elastic Beanstalk using RDS (Amazon's Relational Database Service).  It will use a custom serverless Lambda trigger function to make sure our Cognito users are synced with our server's database.  In this function we will also add the user's primary database key into the identity token so our API can easily find the user's data without having to query by email.
 
 When a user authenticates through Cognito, AWS will issue the client a JWT (JSON Web Token).  Our client app will send the token to our server, which will verify the token through AWS. Let's get started!
+
+## Table of Contents
+
+[Step One: Configuring Cognito in the AWS Console and Google OAuth](#step-one)
+
+[Step Two: Creating the React application](#step-two)
+
+[Part One: Init React application and create Auth functions](#part-one)
+
+[Part Two: Creating components to utilize our Auth functions](#part-two)
+
+[Step Three: Create middleware to verify the JWTs issued by Cognito from our client](#step-three)
+
+[Step Four: Configuring the rest of our server, deploying it to Elastic Beanstalk, and connecting an RDS instance](#step-four)
+
+[Step Five: Deploying our server to Elastic Beanstalk with an RDS instance](#step-five)
+
+[Step Six: Adding a custom Lambda trigger function to our Cognito user pool](#step-six)
+
+### <a id="step-one"></a>
 
 ## Step One: Configuring Cognito in the AWS Console and Google OAuth 
 
@@ -90,7 +106,11 @@ Click **Save changes**.
 
 Now our Cognito user pool is configured and we are ready to start coding!
 
+<a id="step-two"></a>
+
 ## Step Two: Creating the React application
+
+### <a id="part-one"></a>
 
 ### Part One: Init React application and create Auth functions.
 
@@ -428,6 +448,8 @@ axiosWithAuth('get', '/users').then(res => {
 ```
 
 This would send a **GET** request to `http://localhost:5000/users`.
+
+<a id="part-two"></a>
 
 ### Part Two: Creating components to utilize our Auth functions.
 
@@ -947,6 +969,8 @@ Your app should look like this:
 
 You should now be able login/register with email/Google and use all of the awesome functions we implemented. Now let's create the Node.js Express API to authenticate with our client/Cognito.
 
+<a id="step-three"></a>
+
 ## Step Three: Create middleware to verify the JWTs issued by Cognito from our client
 
 Let's init our server project. Open up a terminal, CD into the new project folder and `npm init -y` .
@@ -1147,6 +1171,8 @@ The **.verify()** method takes in the token as the first argument, a public key,
 Cognito issues three types of tokens: **access tokens**, **id tokens**, and **refresh tokens**. We'll check the decoded token's **token_use** value to make sure it's only an access token or an id token.
 
 Next, we'll check compare the token's **aud** or **client_id** value to our Cognito client id.  The token has an **aud** or a **client_id** depending if it's an access token or an id token. The verify function will return our decoded token if it makes it through our verify function without any errors being thrown.  We'll then store any useful claims in **req.user**, and then call **next()** to exit our middleware and continue our request. Finally the middleware function is exported so it can be used by the API.
+
+<a id="step-four"></a>
 
 ## Step Four: Configuring the rest of our server, deploying it to Elastic Beanstalk, and connecting an RDS instance
 
@@ -1386,6 +1412,8 @@ Authorization: 'Bearer this_should_not_work',
 
 Great! Our server responded with a **401 Unauthorized error** when we sent an invalid token. Change the **axiosWithAuth** back to what it was earlier. Now it's time to deploy our server onto **Elastic Beanstalk** and add an **RDS** instance.  After that we will create a custom **Lambda** trigger function that will run whenever Cognito generates a token.  The first time a user logs in, it will add the user to the server's RDS database and insert the user's database id to the identity token's payload.
 
+<a id="step-five"></a>
+
 ## Step Five: Deploying our server to Elastic Beanstalk with an RDS instance
 
 Navigate to the **AWS console** and go to **Services** > **Elastic Beanstalk**. Enter a name for your server, select **Node.js** for the platform, **version 12** for the platform branch, and use the recommended platform version. For **Application code** select **Sample application**, then **Create application**.
@@ -1431,6 +1459,8 @@ Now start up your React application and check to see if it can authenticate with
 ![its working](https://res.cloudinary.com/markpkng/image/upload/v1594768825/cognito-react-node/its_working_dbkksz.png)
 
 It's working! 
+
+<a id="step-six"></a>
 
 ## Step Six: Adding a custom Lambda trigger function to our Cognito user pool
 
