@@ -257,6 +257,7 @@ class CustomChromeStorage {
                 });
             });
         }
+	return CustomChromeStorage.syncPromise;
     }
 }
 
@@ -1491,7 +1492,7 @@ exports.handler = async (event, context) => {
             event.request &&
             event.request.userAttributes &&
             event.request.userAttributes.email;
-        async () => {};
+        
         if (email) {
             pool.query(`SELECT email, id from USERS WHERE email='${email}'`)
                 .then((result) => {
